@@ -1,0 +1,14 @@
+BODY {
+    font-family: Arial, Helvetica, sans-serif;
+    color:#eee;
+    background: #222;
+    min-width: 320px;
+}
+.row {
+    height:27px;
+    text-align: center;
+}
+.row button {
+    width:147px;
+    height:18px;
+}

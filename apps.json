@@ -1,0 +1,20 @@
+{
+    "devtools_port": 9090,
+    "startup_app": {
+        "name": "Services Demo",
+        "description": "Demo of Openfin Desktop Services",
+        "url": "http://localhost:3011/apps.html",
+        "uuid": "services-demo",
+        "autoShow": true
+    },
+    "services": [
+        {
+            "name": "fdc3", "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/app.staging.json"
+        }
+    ],
+    "runtime": {
+        "arguments": "--v=1 --enable-crash-reporting",
+        "version": "9.61.33.32"
+    },
+    "shortcut": {}
+}
