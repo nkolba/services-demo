@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-const { spawnSync } = require('child_process');
+const execa = require('execa');
+const getStream = require('get-stream');
 const fetch = require('node-fetch');
 const appConfig = require('./apps.json');
 
@@ -22,10 +23,12 @@ async function update() {
         const serviceUrl = getServiceUrl(service);
     
         // run the commands and process the output
-        const npmOut = spawnSync(npmCommand.name, npmargs).stdout.toString();
-        const npmMsg = processNPMOutput(npmOut.split('\n'));
-        const gitOut = spawnSync(gitCommand.name, gitargs).stdout.toString();
-        const gitMsg = getDevelopSha(gitOut.split('\n'));
+        const npmOut = execa(npmCommand.name, npmargs).stdout;
+        const npmStream = await getStream(npmOut);
+        const npmMsg = processNPMOutput(npmStream.split('\n'));
+        const gitOut = execa(gitCommand.name, gitargs).stdout;
+        const gitStream = await getStream(gitOut);
+        const gitMsg = getDevelopSha(gitStream.split('\n'));
     
         let maniURL = '??';
         if (serviceUrl.length >0) {
