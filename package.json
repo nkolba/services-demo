@@ -9,7 +9,7 @@
   "author": "openfin",
   "dependencies": {
     "openfin-fdc3": "0.0.4-alpha.11",
-    "openfin-layouts": "0.0.3-alpha.39",
+    "openfin-layouts": "0.0.3-alpha.40",
     "openfin-notifications": "0.0.4-alpha.9"
   },
   "devDependencies": {

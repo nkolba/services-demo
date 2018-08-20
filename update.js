@@ -5,6 +5,8 @@ const getStream = require('get-stream');
 const fetch = require('node-fetch');
 const appConfig = require('./apps.json');
 
+const {lookupServiceUrl} = require('./utils');
+
 async function update() {
     const services = [ 'layouts', 'notifications', 'fdc3' ];
     const npmCommand = {name: "npm", args: ['i', '--save', 'openfin-__SERVICE__@alpha']};
@@ -20,7 +22,7 @@ async function update() {
         const gitargs = Object.assign([], gitCommand.args);
         gitargs[gitargs.length-1] = gitargs[gitargs.length-1].replace('__SERVICE__', service);
         // console.log(`git command: ${gitCommand.name} ${gitargs.join(' ')}`);
-        const serviceUrl = getServiceUrl(service);
+        const serviceUrl = await getServiceUrl(service);
     
         // run the commands and process the output
         const npmOut = execa(npmCommand.name, npmargs).stdout;
@@ -35,11 +37,11 @@ async function update() {
             maniURL = await getManifestUrl(serviceUrl);
         }
     
-        console.log(`${service}:`);
+        console.log(`\nService: ${service}`);
         console.log(`    prerelease: ${npmMsg}`);
         console.log(`    github sha: ${gitMsg}`);
         console.log(`   service url: ${serviceUrl}`);
-        console.log(`       app url: ${maniURL}\n`);
+        console.log(`       app url: ${maniURL}\n\n`);
     }    
 }
 
@@ -49,7 +51,7 @@ async function getManifestUrl(serviceUrl) {
         const json = await res.json();
         if (json && json.startup_app) {
             return json.startup_app.url;
-        }    
+        }
     } catch(e) {
         console.error(e);
     }
@@ -73,16 +75,17 @@ function processNPMOutput(lines) {
     return lines[0].replace('+ ', '');
 }
 
-function getServiceUrl(service) {
+async function getServiceUrl(service) {
     if (appConfig.services != null) {
         for (let i=0; i<appConfig.services.length; i++) {
             const s = appConfig.services[i];
             if (service === s.name && s.manifestUrl != null) {
-                return s.manifestUrl
+                return s.manifestUrl;
             }
         }
     }
-    return '';
+    const url = await lookupServiceUrl(service);
+    return url;
 }
 
 update();

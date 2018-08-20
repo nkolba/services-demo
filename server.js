@@ -1,10 +1,12 @@
 const openfinLauncher = require('hadouken-js-adapter');
 const express = require('express');
+const fetch = require('node-fetch');
 const http = require('http');
 const path = require('path');
 const os = require('os');
 
-/* process.env.PORT is used in case you want to push to Heroku, for example, here the port will be dynamically allocated */
+const {lookupServiceUrl} = require('./utils');
+
 var port = process.env.PORT || 3011;
 
 var app = express();
@@ -22,9 +24,27 @@ http.createServer(app).listen(port, function(){
         if (conf && conf.services) {
             for (let i=0; i<conf.services.length; i++) {
                 const service = conf.services[i];
-                console.log(`Starting service: ${service.name} for Mac OS`);
-                openfinLauncher.launch({ manifestUrl: service.manifestUrl }).catch(err => console.log(err));
+                launchService(service);
             }
         }
     }
 });
+
+const launchService = async (service) => {
+    if (service.manifestUrl) {
+        launchServiceUrl(service.manifestUrl);
+        console.log(`Starting service: ${service.name} from manifestUrl: ${service.manifestUrl}`);
+    } else {
+        const sUrl = await lookupServiceUrl(service.name);
+        if (sUrl.length > 0) {
+            launchServiceUrl(sUrl);
+            console.log(`Starting service: ${service.name} from app directory url: ${sUrl}`);
+        } else {
+            console.log(`unable to launch service: ${service.name}, could not determine url.`);
+        }
+    }
+};
+
+const launchServiceUrl = (url) => {
+    openfinLauncher.launch({ manifestUrl: url }).catch(err => console.log(err));
+};
