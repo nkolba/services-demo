@@ -8,44 +8,50 @@ const appConfig = require('./apps.json');
 const {lookupServiceUrl} = require('./utils');
 
 async function update() {
-    const services = [ 'layouts', 'notifications', 'fdc3' ];
-    const npmCommand = {name: "npm", args: ['i', '--save', 'openfin-__SERVICE__@alpha']};
-    const gitCommand = {name: "git", args: ['ls-remote', 'https://github.com/HadoukenIO/__SERVICE__-service.git']};
-    
-    for (let i in services ) {
-        const service = services[i];
-    
-        // fill out command args template strings
-        const npmargs = Object.assign([], npmCommand.args);
-        npmargs[npmargs.length-1] = npmargs[npmargs.length-1].replace('__SERVICE__', service);
-        // console.log(`npm command: ${npmCommand.name} ${npmargs.join(' ')}`);
-        const gitargs = Object.assign([], gitCommand.args);
-        gitargs[gitargs.length-1] = gitargs[gitargs.length-1].replace('__SERVICE__', service);
-        // console.log(`git command: ${gitCommand.name} ${gitargs.join(' ')}`);
-        const serviceUrl = await getServiceUrl(service);
-    
-        // run the commands and process the output
-        const npmOut = execa(npmCommand.name, npmargs).stdout;
-        const npmStream = await getStream(npmOut);
-        const npmMsg = processNPMOutput(npmStream.split('\n'));
-        const gitOut = execa(gitCommand.name, gitargs).stdout;
-        const gitStream = await getStream(gitOut);
-        const gitMsg = getDevelopSha(gitStream.split('\n'));
-    
-        let maniURL = '??';
-        if (serviceUrl.length >0) {
-            maniURL = await getManifestUrl(serviceUrl);
+    try {
+        const npmCommand = {name: "npm", args: ['i', '--save', 'openfin-__SERVICE__@alpha']};
+        const gitCommand = {name: "git", args: ['ls-remote', 'https://github.com/HadoukenIO/__SERVICE__-service.git']};
+
+        for (let i in appConfig.services ) {
+            const service = appConfig.services[i];
+
+            // fill out command arg template strings
+            const npmargs = Object.assign([], npmCommand.args);
+            npmargs[npmargs.length-1] = npmargs[npmargs.length-1].replace('__SERVICE__', service.name);
+            const gitargs = Object.assign([], gitCommand.args);
+            gitargs[gitargs.length-1] = gitargs[gitargs.length-1].replace('__SERVICE__', service.name);
+
+            // run the commands and process the output
+            const npmOut = execa(npmCommand.name, npmargs).stdout;
+            const npmStream = await getStream(npmOut);
+            const npmMsg = processNPMOutput(npmStream.split('\n'));
+            const gitOut = execa(gitCommand.name, gitargs).stdout;
+            const gitStream = await getStream(gitOut);
+            const gitMsg = getDevelopSha(gitStream.split('\n'));
+
+            // find service's manifest url and then get the startup_app.url
+            const serviceUrl = service.manifestUrl;
+            if (!serviceUrl) {
+                serviceUrl = await lookupServiceUrl(service.name);
+            }
+            let appURL = '??';
+            if (serviceUrl.length >0) {
+                appURL = await getServiceAppUrl(serviceUrl);
+            }
+
+            // a nice message to the user
+            console.log(`\nService: ${service.name}`);
+            console.log(`    prerelease: ${npmMsg}`);
+            console.log(`    github sha: ${gitMsg}`);
+            console.log(`   service url: ${serviceUrl}`);
+            console.log(`       app url: ${appURL}\n\n`);
         }
-    
-        console.log(`\nService: ${service}`);
-        console.log(`    prerelease: ${npmMsg}`);
-        console.log(`    github sha: ${gitMsg}`);
-        console.log(`   service url: ${serviceUrl}`);
-        console.log(`       app url: ${maniURL}\n\n`);
-    }    
+    } catch(e) {
+        console.error(e);
+    }
 }
 
-async function getManifestUrl(serviceUrl) {
+async function getServiceAppUrl(serviceUrl) {
     try {
         const res = await fetch(serviceUrl);
         const json = await res.json();
@@ -73,19 +79,6 @@ function getDevelopSha(lines) {
 
 function processNPMOutput(lines) {
     return lines[0].replace('+ ', '');
-}
-
-async function getServiceUrl(service) {
-    if (appConfig.services != null) {
-        for (let i=0; i<appConfig.services.length; i++) {
-            const s = appConfig.services[i];
-            if (service === s.name && s.manifestUrl != null) {
-                return s.manifestUrl;
-            }
-        }
-    }
-    const url = await lookupServiceUrl(service);
-    return url;
 }
 
 update();
