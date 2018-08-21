@@ -1,4 +1,4 @@
-const numApps = 7;
+const numApps = 4;
 
 fin.desktop.main(async () => {
 
@@ -8,8 +8,8 @@ fin.desktop.main(async () => {
             "uuid": "openfin-service-demo-" + i,
             "url" : "http://localhost:3011/main.html",
             "mainWindowOptions" : {
-                defaultHeight : 400,
-                defaultWidth: 350,
+                defaultHeight : 600,
+                defaultWidth: 420,
                 defaultTop: 100*i,
                 defaultLeft: 100*i,
                 saveWindowState: false,

@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", function (evt) {
     const logs = document.getElementById('logger');
 
     function logit(msg) {
+        const theDate = new Date().toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'});
         const logEntry = document.createElement('div');
-        logEntry.innerHTML = msg;
+        logEntry.innerHTML = `${theDate} - ${msg}`;
         logs.insertBefore(logEntry, logs.firstChild);
     }
 
@@ -19,10 +20,10 @@ document.addEventListener("DOMContentLoaded", function (evt) {
         const title = document.getElementById('notificationTitle').value;
         const body = document.getElementById('notificationBody').value;
         const opts = Object.assign({}, noteOpts, {body: body, title: title});
-        console.log(`creating notification: ${id} with options: ${JSON.stringify(opts)}...`);
+        logit(`creating notification: ${id} with options:\n${JSON.stringify(opts, null, 4)}`);
         ofnotes.create(id, opts).then( (notification) => {
             if (!notification.success) {
-                logit(`Notification ids must be unique! ID: ${id} already exists!`);
+                logit(`Notification ids must be unique!\nID: ${id} already exists!`);
             }
         })
     });
@@ -48,22 +49,22 @@ document.addEventListener("DOMContentLoaded", function (evt) {
   
     document.getElementById(`getAllNotes`).addEventListener('click', () => {
         ofnotes.getAll().then((notifications) => {
-            logit(`Recieved ${notifications.value.length} notifications from the Notification Center!`);
+            logit(`${notifications.value.length} notifications in the center`);
         })
     });
 
     document.getElementById(`clearAllNotes`).addEventListener('click', () => {
         ofnotes.clearAll().then(() => {
-            logit(`All notifications cleared from the Notification Center!`);
+            logit(`all notifications cleared`);
         })
     });
 
     ofnotes.addEventListener('click', (payload) => {
-        logit(`CLICK action received from notification ${payload.id}`);
+        logit(`notification clicked for id: ${payload.id}`);
     });
     
     ofnotes.addEventListener('close', (payload) => {
-        logit(`CLOSE action received from notification ${payload.id}`);
+        logit(`notification closed for id: ${payload.id}`);
     });
 
     const dockBtn = document.getElementById('undockBtn');
@@ -72,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function (evt) {
     });
 
     new offdc3.IntentListener( (context) => {
-        logit('fdc3 intent event: ' + JSON.stringify(context, null, 4));
+        logit('fdc3 intent event:\n' + JSON.stringify(context, null, 4));
     });
 
     new offdc3.ContextListener( (context) => {
-        logit('fdc3 context event: ' + JSON.stringify(context, null, 4));
+        logit('fdc3 context event:\n' + JSON.stringify(context, null, 4));
     });
 
     const fdc3Symbols = [
