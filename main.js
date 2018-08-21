@@ -4,43 +4,48 @@ import * as offdc3 from "openfin-fdc3"
 
 document.addEventListener("DOMContentLoaded", function (evt) {
 
-    const btns = document.getElementById('notifsButtons');
-    const tmpl = document.getElementById('notifCreateClear');
     const logs = document.getElementById('logger');
 
     function logit(msg) {
-        logEntry = document.createElement('div');
+        const logEntry = document.createElement('div');
         logEntry.innerHTML = msg;
         logs.insertBefore(logEntry, logs.firstChild);
     }
 
-    for (let index = 1; index < 7; index++) {
-        const opts = { body: 'Notification Body ' + index, title: 'Notification Title ' + index, subtitle: 'testSubtitle', icon: 'favicon.ico', context: { testContext: 'testContext'}, date: Date.now()}
-        const clone = document.importNode(tmpl.content, true);
-        const createBtn = clone.querySelector('.row .create');
-        const clearBtn = clone.querySelector('.row .clear');
+    const noteOpts = { subtitle: '', icon: '', context: { testContext: 'testContext'}, date: Date.now()};
 
-        createBtn.addEventListener('click', () => {
-            ofnotes.create(`notification_${index}`, opts)
-            .then((notification) => {
-                if (!notification.success) {
-                    logit(`Notification ids must be unique! ID: notification_${index} already exists!`)
-                }
-            })
+    document.getElementById('createNote').addEventListener('click', () => {
+        const id = document.getElementById('notificationId').value;
+        const title = document.getElementById('notificationTitle').value;
+        const body = document.getElementById('notificationBody').value;
+        const opts = Object.assign({}, noteOpts, {body: body, title: title});
+        console.log(`creating notification: ${id} with options: ${JSON.stringify(opts)}...`);
+        ofnotes.create(id, opts).then( (notification) => {
+            if (!notification.success) {
+                logit(`Notification ids must be unique! ID: ${id} already exists!`);
+            }
+        })
+    });
+
+    document.getElementById('clearNote').addEventListener('click', () => {
+        const id = document.getElementById('notificationId').value;
+        ofnotes.clear(id).then(() => {
+            logit(`notification_${index} cleared`)
         });
-        createBtn.innerHTML = `Create Notification ${index}`;
+    });
 
-        clearBtn.addEventListener('click', () => {
-            ofnotes.clear(`notification_${index}`)
-            .then(() => {
-                logit(`notification_${index} cleared`)
-            });
-        });
-        clearBtn.innerHTML = `Clear Notification ${index}`;
-
-        btns.appendChild(clone);
+    document.getElementById('genNoteId').addEventListener('click', () => {
+        const newId = generateId(7);
+        document.getElementById('notificationId').value = newId;
+    });
+  
+    // generateId :: Integer -> String
+    function generateId (len) {
+        var arr = new Uint8Array((len || 40) / 2);
+        window.crypto.getRandomValues(arr);
+        return Array.from(arr, (dec) => ('0' + dec.toString(16)).substr(-2) ).join('');
     }
-
+  
     document.getElementById(`getAllNotes`).addEventListener('click', () => {
         ofnotes.getAll().then((notifications) => {
             logit(`Recieved ${notifications.value.length} notifications from the Notification Center!`);
@@ -63,16 +68,15 @@ document.addEventListener("DOMContentLoaded", function (evt) {
 
     const dockBtn = document.getElementById('undockBtn');
     dockBtn.addEventListener('click', () => {
-        console.log('undocking window');
-        oflayouts.undock();
+        oflayouts.undock().then(() => logit('window undocked'));
     });
 
     new offdc3.IntentListener( (context) => {
-        console.log('fdc3 intent event: ' + JSON.stringify(context, null, 4));
+        logit('fdc3 intent event: ' + JSON.stringify(context, null, 4));
     });
 
     new offdc3.ContextListener( (context) => {
-        console.log('fdc3 context event: ' + JSON.stringify(context, null, 4));
+        logit('fdc3 context event: ' + JSON.stringify(context, null, 4));
     });
 
     const fdc3Symbols = [
@@ -124,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function (evt) {
             const btn = document.createElement('button');
             btn.innerHTML = symName;
             btn.addEventListener('click', () => {
-                console.log('broadcasting FDC3 context for: ' + symName);
                 offdc3.broadcast(sym);
             });
             div.appendChild(btn);

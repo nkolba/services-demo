@@ -4,11 +4,47 @@ BODY {
     background: #222;
     min-width: 320px;
 }
+
+.title {
+    font-size: 16px;
+    width: 100%;
+    border-bottom: 1px solid #777;
+    margin: 10px 0;
+}
 .row {
-    height:27px;
+    height: 27px;
     text-align: center;
 }
+.row.tall {
+    height: 50px;
+}
 .row button {
-    width:147px;
-    height:18px;
+    width: 147px;
+    height: 18px;
+}
+.row input {
+    width: 137px;
+    border-radius: 3px;
+    border: 1px solid #777;
+    padding: 1px 4px;
+    height: 13px;
+}
+.row textarea {
+    width: 137px;
+    border-radius: 3px;
+    border: 1px solid #777;
+    padding: 1px 4px;
+    height: 32px;
+}
+.row .placeholder {
+    width: 147px;
+    height: 12px;
+    display: inline-block;
+}
+
+#logger {
+    margin:5px;
+    padding:5px;
+    border-radius: 4px;
+    border:1px solid #777;
 }

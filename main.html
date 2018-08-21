@@ -12,18 +12,38 @@
 
 <body>
 
-    <div id="notifsButtons"></div>
+    <div class="title">Notifications</div>
+    <div id="notifsButtons">
+        <div class="row">
+            <button id="genNoteId">Generate ID</button>
+            <input id="notificationId" placeholder="enter/generate id" />
+        </div>
+        <div class="row">
+            <div class="placeholder"></div>
+            <input id="notificationTitle" placeholder="enter notification title" />
+        </div>
+        <div class="row tall">
+            <div class="placeholder"></div>
+            <textarea id="notificationBody" placeholder="enter notification body"></textarea>
+        </div>
+    </div>
     <div>
+        <div class="row">
+            <button id="createNote">Create</button>
+            <button id="clearNote">Clear</button>
+        </div>
         <div class="row">
             <button id="getAllNotes">Get All</button>
             <button id="clearAllNotes">Clear All</button>
         </div>            
     </div>
 
+    <div class="title">FDC3</div>
     <div>
         <div id="fdc3Links"></div>
     </div>
 
+    <div class="title">Layouts</div>
     <div>
         <div class="row center">
             <button id="undockBtn">Undock</button>
@@ -31,13 +51,6 @@
     </div>
 
     <div id="logger"></div>
-
-    <template id="notifCreateClear">
-        <div class="row">
-            <button class="create"></button>
-            <button class="clear"></button>
-        </div>
-    </template>
 
 </body>
 </html>
