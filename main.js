@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", function (evt) {
     const tmpl = document.getElementById('notifCreateClear');
     const logs = document.getElementById('logger');
 
-    let dockable = true;
-
     function logit(msg) {
         logEntry = document.createElement('div');
         logEntry.innerHTML = msg;
@@ -43,17 +41,6 @@ document.addEventListener("DOMContentLoaded", function (evt) {
         btns.appendChild(clone);
     }
 
-    const dockBtn = document.getElementById('dockerBtn');
-    dockBtn.addEventListener('click', () => {
-        if ( dockable ) {
-            clearBtn.innerHTML = `Undock`;
-            oflayouts.undock();
-        } else {
-            clearBtn.innerHTML = `Dock`;
-        }
-        dockable = !dockable;
-    });
-
     document.getElementById(`getAllNotes`).addEventListener('click', () => {
         ofnotes.getAll().then((notifications) => {
             logit(`Recieved ${notifications.value.length} notifications from the Notification Center!`);
@@ -74,31 +61,70 @@ document.addEventListener("DOMContentLoaded", function (evt) {
         logit(`CLOSE action received from notification ${payload.id}`);
     });
 
-    const fdc3Btn = document.getElementById('fdc3Btn');
-    fdc3Btn.addEventListener('click', () => {
-        offdc3.broadcast(fdc3Context);
+    const dockBtn = document.getElementById('undockBtn');
+    dockBtn.addEventListener('click', () => {
+        console.log('undocking window');
+        oflayouts.undock();
     });
 
-    const listener = new offdc3.IntentListener( (context) => {
+    new offdc3.IntentListener( (context) => {
         console.log('fdc3 context event: ' + JSON.stringify(context, null, 4));
     });
 
-    const fdc3Context = {
-        "object" : "fdc3-context", 
-        "definition" : " https://fdc3.org...", 
-        "version" : "1.0.0",
-        "data" : [ 
-            { 
-                "type" : "security",
-                "name" : "Apple",
-                "id" : {
-                    "ticker" : "aapl",
-                    "ISIN" : "US0378331005",
-                    "CUSIP" : "037833100",
-                    "FIGI" : "BBG000B9XRY4",
-                    "default" : "aapl"
+    const fdc3Symbols = [
+        {
+            "object" : "fdc3-context", 
+            "definition" : " https://fdc3.org...", 
+            "version" : "1.0.0",
+            "data" : [ 
+                { 
+                    "type" : "security",
+                    "name" : "Apple",
+                    "id" : {
+                        "ticker" : "aapl",
+                        "ISIN" : "US0378331005",
+                        "CUSIP" : "037833100",
+                        "FIGI" : "BBG000B9XRY4",
+                        "default" : "aapl"
+                    }
                 }
-            }
-        ]
-    };
+            ]
+        },
+        {
+            "object" : "fdc3-context", 
+            "definition" : " https://fdc3.org...", 
+            "version" : "1.0.0",
+            "data" : [ 
+                { 
+                    "type" : "security",
+                    "name" : "Tesla",
+                    "id" : {
+                        "ticker" : "TSLA",
+                        "ISIN" : "US0378331005",
+                        "CUSIP" : "037833100",
+                        "FIGI" : "BBG000B9XRY4",
+                        "default" : "tsla"
+                    }
+                }
+            ]
+        }
+    ];
+
+    const fdc3Links = document.getElementById('fdc3Links');
+    if (fdc3Links) {
+        for (let i in fdc3Symbols) {
+            const sym = fdc3Symbols[i];
+            const symName = sym.data[0].name;
+            const div = document.createElement('div');
+            div.classList.add('row');
+            const btn = document.createElement('button');
+            btn.innerHTML = symName;
+            btn.addEventListener('click', () => {
+                console.log('broadcasting FDC3 context for: ' + symName);
+                offdc3.broadcast(sym);
+            });
+            div.appendChild(btn);
+            fdc3Links.appendChild(div);
+        }
+    }
 });
