@@ -68,6 +68,10 @@ document.addEventListener("DOMContentLoaded", function (evt) {
     });
 
     new offdc3.IntentListener( (context) => {
+        console.log('fdc3 intent event: ' + JSON.stringify(context, null, 4));
+    });
+
+    new offdc3.ContextListener( (context) => {
         console.log('fdc3 context event: ' + JSON.stringify(context, null, 4));
     });
 
