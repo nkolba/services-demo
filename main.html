@@ -12,8 +12,8 @@
 
 <body>
     <ul>
-   <li>restore a Layout</li> 
-    <li>save a Layout</li>
+    <li id="restore">restore a Layout</li> 
+    <li id="save">save a Layout</li>
     <li id="deregister">deregister windows</li>
     <li id="undock">undock windows</li>
     <li id="ungroup">undock groups</li>
@@ -21,6 +21,8 @@
 </ul>
 </body>
 <script>
+
+
 
 async function positionWindow(win) {
     try {
@@ -105,6 +107,15 @@ async function openChild(name, url) {
             function(e){console.log(e);});
         });
 
+
+        document.getElementById("restore").addEventListener("click",function(){
+            Layouts.restoreLayout(snapLayout).then(r => {console.log(r);},e => {console.log(e);});
+        });
+
+        document.getElementById("save").addEventListener("click",function(){
+            Layouts.generateLayout().then(l => {console.log(JSON.stringify(l));});
+        });
     });
+
 </script>
 </html>
