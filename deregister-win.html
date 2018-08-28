@@ -1,0 +1,17 @@
+<html>
+        <head>
+            <title>Deregister Window</title>
+            <script src="main-bundle.js"></script>
+        </head>
+        <body>
+            <h1>Window</h1>
+            <button id="deregister">Deregister</button>
+        </body>
+        <script>
+            document.addEventListener("DOMContentLoaded",function(){
+                document.getElementById("deregister").addEventListener("click",function(){
+                    Layouts.deregister();
+                });
+            });
+        </script>
+    </html>

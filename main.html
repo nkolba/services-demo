@@ -5,52 +5,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Notification Client</title>
+    <title>Layout Manager Tutorial</title>
     <script src="main-bundle.js"></script>
     <link href="main.css" rel="stylesheet">
 </head>
 
 <body>
-
-    <div class="title">Notifications</div>
-    <div id="notifsButtons">
-        <div class="row">
-            <button id="genNoteId">Generate ID</button>
-            <input id="notificationId" placeholder="enter/generate id" />
-        </div>
-        <div class="row">
-            <div class="placeholder"></div>
-            <input id="notificationTitle" placeholder="enter notification title" />
-        </div>
-        <div class="row tall">
-            <div class="placeholder"></div>
-            <textarea id="notificationBody" placeholder="enter notification body"></textarea>
-        </div>
-    </div>
-    <div>
-        <div class="row">
-            <button id="createNote">Create</button>
-            <button id="clearNote">Clear</button>
-        </div>
-        <div class="row">
-            <button id="getAllNotes">Get All</button>
-            <button id="clearAllNotes">Clear All</button>
-        </div>            
-    </div>
-
-    <div class="title">FDC3</div>
-    <div>
-        <div id="fdc3Links"></div>
-    </div>
-
-    <div class="title">Layouts</div>
-    <div>
-        <div class="row center">
-            <button id="undockBtn">Undock</button>
-        </div>            
-    </div>
-
-    <div id="logger"></div>
-
+    <ul>
+   <li>restore a Layout</li> 
+    <li>save a Layout</li>
+    <li id="deregister">deregister windows</li>
+    <li id="undock">undock windows</li>
+    <li id="ungroup">undock groups</li>
+    <li>create tab ui</li>
+</ul>
 </body>
+<script>
+
+async function positionWindow(win) {
+    try {
+        const ofWin = await fin.Window.wrap(win);
+        await ofWin.leaveGroup();
+        await ofWin.setBounds(win);
+
+        // COMMENTED OUT FOR DEMO
+        if (win.state === 'normal') {
+            await ofWin.restore();
+        } else if (win.state === 'minimized') {
+            await ofWin.minimize();
+        } else if (win.state === 'maximized') {
+            await ofWin.maximize();
+        }
+
+        if (win.isShowing) {
+            await ofWin.show();
+        } else {
+            await ofWin.hide();
+        }
+    } catch (e) {
+        console.error('position window error', e);
+    }
+}
+
+async function openChild(name, url) {
+    const win = fin.Window.create({
+        url: url,
+        autoShow: true,
+        saveWindowState: false,
+        frame: !(url && url.includes('frameless')),
+        name
+    });
+    return win;
+}
+
+ async function appRestore(layoutApp) {
+        const ofApp = await fin.Application.getCurrent();
+        const openWindows = await ofApp.getChildWindows();
+        const openAndPosition = layoutApp.childWindows.map(async (win, index) => {
+        if(!openWindows.some(w => w.identity.name === win.name)) {
+            const ofWin = await openChild(win.name, win.info.url);
+            await positionWindow(win);
+        } else {
+            await positionWindow(win);
+        }
+        });
+        await Promise.all(openAndPosition);
+        return layoutApp;
+    };
+
+    Layouts.onWillSaveAppLayout(layoutApp => {return layoutApp;});
+
+    Layouts.onAppRestore(appRestore);
+
+    document.addEventListener("DOMContentLoaded",function(){
+        document.getElementById("undock").addEventListener("click",function(){
+            let win = new fin.desktop.Window({name:"undockWin",
+            url:"undock-win.html",
+            defaultHeight:600,
+            defaultWidth:400},
+            function(){win.show();},
+            function(e){console.log(e);});
+        });
+
+        document.getElementById("ungroup").addEventListener("click",function(){
+            let win = new fin.desktop.Window({name:"ungroupWin",
+            url:"ungroup-win.html",
+            defaultHeight:600,
+            defaultWidth:400},
+            function(){win.show();},
+            function(e){console.log(e);});
+        });
+
+        document.getElementById("deregister").addEventListener("click",function(){
+            let win = new fin.desktop.Window({name:"deregisterWin",
+            url:"deregister-win.html",
+            defaultHeight:600,
+            defaultWidth:400},
+            function(){win.show();},
+            function(e){console.log(e);});
+        });
+
+    });
+</script>
 </html>

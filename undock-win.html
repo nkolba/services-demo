@@ -1,0 +1,18 @@
+<html>
+        <head>
+            <title>Undock Window</title>
+            <script src="main-bundle.js"></script>
+        </head>
+        <body>
+            <h2>Layouts.undockWindow();</h2>
+
+            <button id="undock">Undock</button>
+        </body>
+        <script>
+            document.addEventListener("DOMContentLoaded",function(){
+                document.getElementById("undock").addEventListener("click",function(){
+                    Layouts.undockWindow();
+                });
+            });
+        </script>
+    </html>

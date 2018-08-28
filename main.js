@@ -1,138 +1,292 @@
-import * as ofnotes from "openfin-notifications"
+
 import * as oflayouts from "openfin-layouts"
-import * as offdc3 from "openfin-fdc3"
+window.Layouts = oflayouts;
+
+oflayouts.onLayoutRestore(function(layoutData){
+    console.log("layout restore");
+    layoutData.childWindows.forEach(child =>{
+        let win = new fin.desktop.Window(child.info);
+    });
+});
+
+window.snapLayout = {
+    "apps": [
+      {
+        "childWindows": [
+          {
+            "bottom": 250,
+            "contextGroups": [],
+            "height": 200,
+            "info": {
+              "canNavigateBack": false,
+              "canNavigateForward": false,
+              "preloadScripts": [],
+              "title": "Snap Window",
+              "url": "http://localhost:3011/snap-win.html"
+            },
+            "isShowing": true,
+            "left": 25,
+            "name": "Window1",
+            "right": 325,
+            "state": "normal",
+            "top": 50,
+            "uuid": "services-demo",
+            "width": 300,
+            "windowGroup": []
+          },
+          {
+            "bottom": 250,
+            "contextGroups": [],
+            "height": 200,
+            "info": {
+              "canNavigateBack": false,
+              "canNavigateForward": false,
+              "preloadScripts": [],
+              "title": "Snap Window",
+              "url": "http://localhost:3011/snap-win.html"
+            },
+            "isShowing": true,
+            "left": 375,
+            "name": "Window2",
+            "right": 675,
+            "state": "normal",
+            "top": 50,
+            "uuid": "services-demo",
+            "width": 300,
+            "windowGroup": []
+          },
+          {
+            "bottom": 250,
+            "contextGroups": [],
+            "height": 200,
+            "info": {
+              "canNavigateBack": false,
+              "canNavigateForward": false,
+              "preloadScripts": [],
+              "title": "Snap Window",
+              "url": "http://localhost:3011/snap-win.html"
+            },
+            "isShowing": true,
+            "left": 725,
+            "name": "Window3",
+            "right": 1025,
+            "state": "normal",
+            "top": 50,
+            "uuid": "services-demo",
+            "width": 300,
+            "windowGroup": []
+          },
+          {
+            "bottom": 575,
+            "contextGroups": [],
+            "height": 275,
+            "info": {
+              "canNavigateBack": false,
+              "canNavigateForward": false,
+              "preloadScripts": [],
+              "title": "Snap Window",
+              "url": "http://localhost:3011/snap-win.html"
+            },
+            "isShowing": true,
+            "left": 25,
+            "name": "Window4",
+            "right": 325,
+            "state": "normal",
+            "top": 300,
+            "uuid": "services-demo",
+            "width": 300,
+            "windowGroup": []
+          },
+          {
+            "bottom": 575,
+            "contextGroups": [],
+            "height": 275,
+            "info": {
+              "canNavigateBack": false,
+              "canNavigateForward": false,
+              "preloadScripts": [],
+              "title": "Snap Window",
+              "url": "http://localhost:3011/snap-win.html"
+            },
+            "isShowing": true,
+            "left": 375,
+            "name": "Window5",
+            "right": 675,
+            "state": "normal",
+            "top": 300,
+            "uuid": "services-demo",
+            "width": 300,
+            "windowGroup": []
+          },
+          {
+            "bottom": 575,
+            "contextGroups": [],
+            "height": 275,
+            "info": {
+              "canNavigateBack": false,
+              "canNavigateForward": false,
+              "preloadScripts": [],
+              "title": "Snap Window",
+              "url": "http://localhost:3011/snap-win.html"
+            },
+            "isShowing": true,
+            "left": 725,
+            "name": "Window6",
+            "right": 1125,
+            "state": "normal",
+            "top": 300,
+            "uuid": "services-demo",
+            "width": 400,
+            "windowGroup": []
+          }
+        ],
+        "confirmed": true,
+        "initialOptions": {
+          "_experimental": {
+            "v2Api": true
+          },
+          "autoShow": true,
+          "defaultCentered": true,
+          "defaultHeight": 500,
+          "defaultWidth": 700,
+          "name": "Layouts-Manager",
+          "saveWindowState": false,
+          "url": "http://localhost:3011/main.html",
+          "uuid": "services-demo"
+        },
+        "launchMode": "node.exe",
+        "mainWindow": {
+          "bottom": 943,
+          "contextGroups": [],
+          "height": 500,
+          "info": {
+            "canNavigateBack": false,
+            "canNavigateForward": false,
+            "preloadScripts": [],
+            "title": "Layouts Manager",
+            "url": "http://localhost:3011/main.html"
+          },
+          "isShowing": true,
+          "left": 610,
+          "name": "Layouts-Manager",
+          "right": 1310,
+          "state": "normal",
+          "top": 443,
+          "uuid": "services-demo",
+          "width": 700,
+          "windowGroup": []
+        },
+        "manifestUrl": "http://localhost:3011/app.json",
+        "runtime": {
+          "version": "9.61.33.32"
+        },
+        "uuid": "services-demo"
+      }
+    ],
+    "monitorInfo": {
+      "deviceScaleFactor": 1,
+      "dpi": {
+        "x": 96,
+        "y": 96
+      },
+      "nonPrimaryMonitors": [],
+      "primaryMonitor": {
+        "available": {
+          "dipRect": {
+            "bottom": 860,
+            "left": 0,
+            "right": 1440,
+            "top": 0
+          },
+          "scaledRect": {
+            "bottom": 860,
+            "left": 0,
+            "right": 1440,
+            "top": 0
+          }
+        },
+        "availableRect": {
+          "bottom": 860,
+          "left": 0,
+          "right": 1440,
+          "top": 0
+        },
+        "deviceId": "\\\\?\\DISPLAY#Default_Monitor#5&140b9d70&0&UID0#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}",
+        "deviceScaleFactor": 1,
+        "displayDeviceActive": true,
+        "dpi": {
+          "x": 96,
+          "y": 96
+        },
+        "monitor": {
+          "dipRect": {
+            "bottom": 900,
+            "left": 0,
+            "right": 1440,
+            "top": 0
+          },
+          "scaledRect": {
+            "bottom": 900,
+            "left": 0,
+            "right": 1440,
+            "top": 0
+          }
+        },
+        "monitorRect": {
+          "bottom": 900,
+          "left": 0,
+          "right": 1440,
+          "top": 0
+        },
+        "name": "\\\\.\\DISPLAY1"
+      },
+      "reason": "api-query",
+      "taskbar": {
+        "dipRect": {
+          "bottom": 900,
+          "left": 0,
+          "right": 1440,
+          "top": 860
+        },
+        "edge": "bottom",
+        "rect": {
+          "bottom": 900,
+          "left": 0,
+          "right": 1440,
+          "top": 860
+        },
+        "scaledRect": {
+          "bottom": 900,
+          "left": 0,
+          "right": 1440,
+          "top": 860
+        }
+      },
+      "virtualScreen": {
+        "bottom": 900,
+        "dipRect": {
+          "bottom": 900,
+          "left": 0,
+          "right": 1440,
+          "top": 0
+        },
+        "left": 0,
+        "right": 1440,
+        "scaledRect": {
+          "bottom": 900,
+          "left": 0,
+          "right": 1440,
+          "top": 0
+        },
+        "top": 0
+      }
+    },
+    "name": "snaps",
+    "type": "layout"
+  };
 
 document.addEventListener("DOMContentLoaded", function (evt) {
-
-    const logs = document.getElementById('logger');
-
-    function logit(msg) {
-        const theDate = new Date().toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'});
-        const logEntry = document.createElement('div');
-        logEntry.innerHTML = `${theDate} - ${msg}`;
-        logs.insertBefore(logEntry, logs.firstChild);
-    }
-
-    const noteOpts = { subtitle: '', icon: '', context: { testContext: 'testContext'}, date: Date.now()};
-
-    document.getElementById('createNote').addEventListener('click', () => {
-        const id = document.getElementById('notificationId').value;
-        const title = document.getElementById('notificationTitle').value;
-        const body = document.getElementById('notificationBody').value;
-        const opts = Object.assign({}, noteOpts, {body: body, title: title});
-        logit(`creating notification: ${id} with options:\n${JSON.stringify(opts, null, 4)}`);
-        ofnotes.create(id, opts).then( (notification) => {
-            if (!notification.success) {
-                logit(`Notification ids must be unique!\nID: ${id} already exists!`);
-            }
-        })
-    });
-
-    document.getElementById('clearNote').addEventListener('click', () => {
-        const id = document.getElementById('notificationId').value;
-        ofnotes.clear(id).then(() => {
-            logit(`notification_${index} cleared`)
-        });
-    });
-
-    document.getElementById('genNoteId').addEventListener('click', () => {
-        const newId = generateId(7);
-        document.getElementById('notificationId').value = newId;
-    });
-  
-    // generateId :: Integer -> String
-    function generateId (len) {
-        var arr = new Uint8Array((len || 40) / 2);
-        window.crypto.getRandomValues(arr);
-        return Array.from(arr, (dec) => ('0' + dec.toString(16)).substr(-2) ).join('');
-    }
-  
-    document.getElementById(`getAllNotes`).addEventListener('click', () => {
-        ofnotes.getAll().then((notifications) => {
-            logit(`${notifications.value.length} notifications in the center`);
-        })
-    });
-
-    document.getElementById(`clearAllNotes`).addEventListener('click', () => {
-        ofnotes.clearAll().then(() => {
-            logit(`all notifications cleared`);
-        })
-    });
-
-    ofnotes.addEventListener('click', (payload) => {
-        logit(`notification clicked for id: ${payload.id}`);
-    });
     
-    ofnotes.addEventListener('close', (payload) => {
-        logit(`notification closed for id: ${payload.id}`);
-    });
 
-    const dockBtn = document.getElementById('undockBtn');
-    dockBtn.addEventListener('click', () => {
-        oflayouts.undock().then(() => logit('window undocked'));
-    });
-
-    new offdc3.IntentListener( (context) => {
-        logit('fdc3 intent event:\n' + JSON.stringify(context, null, 4));
-    });
-
-    new offdc3.ContextListener( (context) => {
-        logit('fdc3 context event:\n' + JSON.stringify(context, null, 4));
-    });
-
-    const fdc3Symbols = [
-        {
-            "object" : "fdc3-context", 
-            "definition" : " https://fdc3.org...", 
-            "version" : "1.0.0",
-            "data" : [ 
-                { 
-                    "type" : "security",
-                    "name" : "Apple",
-                    "id" : {
-                        "ticker" : "aapl",
-                        "ISIN" : "US0378331005",
-                        "CUSIP" : "037833100",
-                        "FIGI" : "BBG000B9XRY4",
-                        "default" : "aapl"
-                    }
-                }
-            ]
-        },
-        {
-            "object" : "fdc3-context", 
-            "definition" : " https://fdc3.org...", 
-            "version" : "1.0.0",
-            "data" : [ 
-                { 
-                    "type" : "security",
-                    "name" : "Tesla",
-                    "id" : {
-                        "ticker" : "TSLA",
-                        "ISIN" : "US0378331005",
-                        "CUSIP" : "037833100",
-                        "FIGI" : "BBG000B9XRY4",
-                        "default" : "tsla"
-                    }
-                }
-            ]
-        }
-    ];
-
-    const fdc3Links = document.getElementById('fdc3Links');
-    if (fdc3Links) {
-        for (let i in fdc3Symbols) {
-            const sym = fdc3Symbols[i];
-            const symName = sym.data[0].name;
-            const div = document.createElement('div');
-            div.classList.add('row');
-            const btn = document.createElement('button');
-            btn.innerHTML = symName;
-            btn.addEventListener('click', () => {
-                offdc3.broadcast(sym);
-            });
-            div.appendChild(btn);
-            fdc3Links.appendChild(div);
-        }
-    }
+ 
 });
