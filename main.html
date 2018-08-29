@@ -73,7 +73,17 @@ async function openChild(name, url) {
         });
         await Promise.all(openAndPosition);
         return layoutApp;
-    };
+    }
+
+    async function saveL(){
+        const l = await Layouts.generateLayout();
+        console.log(JSON.stringify(l));
+    }
+
+    async function restoreL(){
+        const result = Layouts.restoreLayout(snapLayout);
+        console.log(result);
+    }
 
     Layouts.onWillSaveAppLayout(layoutApp => {return layoutApp;});
 
@@ -108,13 +118,12 @@ async function openChild(name, url) {
         });
 
 
-        document.getElementById("restore").addEventListener("click",function(){
-            Layouts.restoreLayout(snapLayout).then(r => {console.log(r);},e => {console.log(e);});
-        });
+        document.getElementById("restore").addEventListener("click",restoreL);
 
-        document.getElementById("save").addEventListener("click",function(){
-            Layouts.generateLayout().then(l => {console.log(JSON.stringify(l));});
-        });
+        document.getElementById("save").addEventListener("click",saveL);
+
+        //dereigster the launcher window
+        Layouts.deregister();
     });
 
 </script>

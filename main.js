@@ -2,12 +2,12 @@
 import * as oflayouts from "openfin-layouts"
 window.Layouts = oflayouts;
 
-oflayouts.onLayoutRestore(function(layoutData){
+/*oflayouts.onLayoutRestore(function(layoutData){
     console.log("layout restore");
     layoutData.childWindows.forEach(child =>{
         let win = new fin.desktop.Window(child.info);
     });
-});
+});*/
 
 window.snapLayout = {
     "apps": [

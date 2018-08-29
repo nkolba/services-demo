@@ -8,7 +8,7 @@
   },
   "author": "openfin",
   "dependencies": {
-    "openfin-layouts": "0.0.3-alpha.51"
+    "openfin-layouts": "0.0.3-alpha.58"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.5.2",
