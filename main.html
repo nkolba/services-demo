@@ -17,7 +17,7 @@
     <li id="deregister">deregister windows</li>
     <li id="undock">undock windows</li>
     <li id="ungroup">undock groups</li>
-    <li>create tab ui</li>
+    <li id="tabs">create tab ui</li>
 </ul>
 </body>
 <script>
@@ -81,11 +81,11 @@ async function openChild(name, url) {
     }
 
     async function restoreL(){
-        const result = Layouts.restoreLayout(snapLayout);
+        const result = await Layouts.restoreLayout(snapLayout);
         console.log(result);
     }
 
-    Layouts.onWillSaveAppLayout(layoutApp => {return layoutApp;});
+    //Layouts.onApplicationSave(layoutApp => {return layoutApp;});
 
     Layouts.onAppRestore(appRestore);
 
@@ -117,6 +117,14 @@ async function openChild(name, url) {
             function(e){console.log(e);});
         });
 
+        document.getElementById("tabs").addEventListener("click",function(){
+            let win = new fin.desktop.Window({name:"tabsWin-" + Date.now(),
+            url:"customTabs.html",
+            defaultHeight:600,
+            defaultWidth:400},
+            function(){win.show();},
+            function(e){console.log(e);});
+        });
 
         document.getElementById("restore").addEventListener("click",restoreL);
 

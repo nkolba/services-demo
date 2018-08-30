@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script src="main-bundle.js"></script>
+    </head>
+    <body>
+        <h2> Tab Window</h2>
+    </body>
+</html>
+
+<script>
+        var randomColor = "#"+((1<<24)*Math.random()|0).toString(16); 
+    
+        document.body.style.backgroundColor = randomColor;
+
+        fin.desktop.main(()=>{
+           Layouts.setTabClient("http://localhost:3011/tab-strip.html",{height:62});
+
+            Layouts.addEventListener("join-tab-group", (e) => {
+                console.log("TABBED: ", e);
+            });
+
+            Layouts.addEventListener("leave-tab-group", (e) => {
+                console.log("UNTABBED: ", e);
+            });
+        })
+    </script>
