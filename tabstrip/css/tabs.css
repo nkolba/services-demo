@@ -1,9 +1,4 @@
-<html>
-        
-        <head>
-            <script src="main-bundle.js"></script>
-            <style>
-            :root {
+:root {
 	--body-background: #2b2d3f;
 	--tab-background: #242636;
 	--tab-active-background: #6d6a82;
@@ -29,17 +24,10 @@ body {
 }
 
 #tabs {
-	width: 100%;
+	width: calc(100% - 40px);
 	height: 28px;
 	display: flex;
-}
-
-#tabs .tab:first-child {
-	margin-left: 10px !important;
-}
-
-#tabs .tab:last-child {
-	margin-right: 10px !important;
+	margin: 0 20;
 }
 
 #tabs-container {
@@ -58,7 +46,7 @@ body {
 	width: 243px;
 	display: flex;
 	justify-content: space-between;
-	margin-left: -15px;
+	margin: 0 -7px;
 	min-width: 72px;
 	-webkit-app-region: no-drag;
 }
@@ -138,7 +126,6 @@ body {
 	height: 18px;
 	width: 18px;
 	margin-left: 3px;
-	background-image: url("http://img.techwallacdn.com/640/photos.demandstudios.com/80/149/fotolia_2762506_XS.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	flex-shrink: 0;
@@ -154,6 +141,15 @@ body {
 	margin-right: 5px;
 	flex-shrink: 1;
 	color: var(--tab-text-color);
+}
+
+.tab .tab-content-wrap .tab-content input {
+	background: transparent;
+	border: none;
+	font-family: var(--tab-font);
+	font-size: 13px;
+	outline:none;
+
 }
 
 .tab .tab-content-wrap .tab-exit {
@@ -188,28 +184,25 @@ body {
 	align-items: center;
 	justify-content: center;
 	background-repeat: no-repeat;
-	background-size: 100% 107%;
-}
-
-#window-button-wrap #window-button-maximize {
-	background-size: 100% 60%;
+	background-size: 25% 45%;
 	background-position: center;
+
 }
 
 #window-button-wrap #window-button-exit {
-	background-image: url("./image/exit.svg");
+	background-image: url("./image/close.png");
 }
 
 #window-button-wrap #window-button-minimize {
-	background-image: url("./image/minimize.svg");
+	background-image: url("./image/minimize.png");
+}
+
+#window-button-wrap #window-button-maximize.restore{
+	background-image: url("./image/restore.png") !important;
 }
 
 #window-button-wrap #window-button-maximize {
-	background-image: url("./image/maximize.svg");
-}
-
-#window-button-wrap #window-button-popout {
-	background-image: url("https://cdn.icon-icons.com/icons2/1244/PNG/512/1492790945-39minimize_84242.png");
+	background-image: url("./image/maximise.png");
 }
 
 #window-button-wrap div img {
@@ -225,9 +218,6 @@ body {
 	background-color: rgba(0, 0, 0, 0.3);
 }
 
-.drag {
-	-webkit-app-region: drag;
-}
 
 #drag-region {
 	position: absolute;
@@ -236,49 +226,5 @@ body {
 	height:calc(100% - 8px);
 	width:calc(100% - 8px);
 	z-index: 1;
+	-webkit-app-region: drag;
 }
-
-            </style>
-        </head>
-        <body>
-            <div id="drag-region" class="drag"></div>
-            <div id="tabs-container">
-                <div id="tabs">
-                </div>
-                <div id="tabs-bottom-border"></div>
-            </div>
-        
-            <div id="window-button-wrap">
-                <div id="window-button-minimize" onclick="Tab.windowActions.minimize()">
-                </div>
-                <div id="window-button-maximize" onclick="Tab.windowActions.toggleMaximize()">
-                </div>
-                <div id="window-button-exit" onclick="Tab.windowActions.close()">
-                </div>
-            </div>
-        
-            <template id="tab-template">
-                <!-- Edit Below Here -->
-        
-                <div class="tab" draggable="true">
-                    <div class="tab-left">
-                        <div class="tab-left-overlay"></div>
-                    </div>
-                    <div class="tab-content-wrap">
-                        <div class="tab-favicon"></div>
-                        <div class="tab-content" draggable="false"></div>
-                        <div class="tab-exit"></div>
-                    </div>
-                    <div class="tab-right">
-                        <div class="tab-right-overlay"></div>
-                    </div>
-                </div>
-                
-                <!-- End Edits -->
-            </template>
-        
-     
-        </body>
-        
-        
-        </html>

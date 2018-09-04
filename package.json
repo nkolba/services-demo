@@ -4,11 +4,12 @@
   "description": "",
   "scripts": {
     "build": "webpack --mode development",
-    "start": "node server.js"
+    "start": "webpack --mode development && node server.js"
   },
   "author": "openfin",
   "dependencies": {
-    "openfin-layouts": "0.0.3-alpha.65"
+    "clean-webpack-plugin": "^0.1.19",
+    "openfin-layouts": "^0.0.3-alpha.81"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.5.2",
