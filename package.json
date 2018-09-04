@@ -9,7 +9,7 @@
   "author": "openfin",
   "dependencies": {
     "clean-webpack-plugin": "^0.1.19",
-    "openfin-layouts": "0.0.3-alpha.81"
+    "openfin-layouts": "^0.0.3-alpha.81"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.5.2",
